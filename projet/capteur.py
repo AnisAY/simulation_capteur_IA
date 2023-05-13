@@ -43,7 +43,7 @@ def add_data(df: pd.DataFrame):
     duration = 60 # Nombre de secondes pour la génération des données.
 
     i = 0
-    while i < 1000:
+    while i < 10000:
         ## Dans cette boucle, vous devez créer et ajouter des données dans Pandas à valeur aléatoire.
         ## Chaque itération comportera 1 ligne à ajouter.
         new_timestamp = current_timestamp + datetime.timedelta(seconds=1)
@@ -121,7 +121,15 @@ def write_data_minio(df: pd.DataFrame):
         "donnes-capteurs", "donnes_capteurs_" + str(timestamp) + ".csv",  "donnes_capteurs_" + str(timestamp) + ".csv")
 
 if __name__ == "__main__":
-    #columns = ["timestamp", "entrance_amount", "exit_amount", "temperature", "humidity", "parking_entrance", "parking_exit", "parking_actual_vehicle"]
-    #df = generate_dataFrame(columns)
+
+    # sans kafka
+    columns = ["timestamp", "entrance_amount", "exit_amount", "temperature", "humidity", "parking_entrance", "parking_exit", "parking_actual_vehicle"]
+
+    df = generate_dataFrame(columns)
+    df = add_data(df)
+    write_data_minio(df)
+
+    #add_datatokafka()
+    #write_data_kafka(df)
     #write_data_kafka(df)
     #add_datatokafka()
