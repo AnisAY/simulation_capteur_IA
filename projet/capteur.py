@@ -6,6 +6,7 @@ from minio import Minio
 from minio.error import S3Error
 import datetime
 import json
+import random
 
 """
 Mini-Projet : Traitement de l'Intelligence Artificielle
@@ -46,19 +47,50 @@ def add_data(df: pd.DataFrame):
     while i < 10000:
         ## Dans cette boucle, vous devez créer et ajouter des données dans Pandas à valeur aléatoire.
         ## Chaque itération comportera 1 ligne à ajouter.
+
+        error_probability = 0.05  # 5% de chance pour avoir des données nulles
+
+        # valeurs aléatoire controllant la génération de valeurs nulles
+        k = random.random()
+        if k < error_probability:
+            entrance_amount = None
+        else:
+            # certaines données générées peuvent être des valeurs négatives
+            entrance_amount = np.random.randint(low=-1, high=50)
+
+        kk = random.random()
+        if kk < error_probability:
+            exit_amount = None
+        else:
+            # certaines données générées peuvent être des valeurs négatives
+            exit_amount = np.random.randint(low=-1, high=50)
+
+
         new_timestamp = current_timestamp + datetime.timedelta(seconds=1)
-        entrance_amount = np.random.randint(low=0, high=50)
-        exit_amount = np.random.randint(low=0, high=50)
         temperature = np.random.normal(loc=20, scale=5)
         humidity = np.random.normal(loc=50, scale=10)
         parking_entrance = np.random.randint(low=1, high=5)
-        parking_exit = np.random.randint(low=1, high=5)
-        parking_actual_vehicle = np.random.randint(low=0, high=500)
+        # ici, le nombre de sorties parking peut être égal à 0 ce qui est une donnée erronée
+        parking_exit = np.random.randint(low=0, high=5)
+        # ici, le nombre de véhicules présents dans le parking peut être égal à -1 ce qui est une donnée erronée
+        parking_actual_vehicle = np.random.randint(low=-1, high=500)
     
         # ajouter une ligne au DataFrame
         df.loc[i] = [new_timestamp, entrance_amount, exit_amount, temperature, humidity, parking_entrance, parking_exit, parking_actual_vehicle]
         i += 1
     return df
+
+
+def random_with_negative_percentage(start, end, size):
+    percentage_valeurs_erronnees = random.randint(0.1, 0.3)
+    nb_valeurs_negatives = int(size * percentage_valeurs_erronnees)
+    nb_valeurs_positives = size - nb_valeurs_negatives
+
+    negative_values = [random.uniform(start, 0) for _ in range(nb_valeurs_negatives)]
+    positive_values = [random.uniform(0, end) for _ in range(nb_valeurs_positives)]
+
+    return negative_values + positive_values
+
 
 
 def add_datatokafka():
