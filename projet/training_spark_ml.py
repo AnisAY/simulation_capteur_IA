@@ -65,7 +65,7 @@ def main():
 
     obj: urllib3.response.HTTPResponse = minio_client.get_object(
         'warehouse',
-        'olist_orders_dataset.csv',
+        'conso-elec-gaz-annuelle-par-naf-agregee-region.csv',
     )
 
     content = obj.data.decode('utf-8')

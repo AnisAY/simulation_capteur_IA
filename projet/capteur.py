@@ -81,17 +81,6 @@ def add_data(df: pd.DataFrame):
     return df
 
 
-def random_with_negative_percentage(start, end, size):
-    percentage_valeurs_erronnees = random.randint(0.1, 0.3)
-    nb_valeurs_negatives = int(size * percentage_valeurs_erronnees)
-    nb_valeurs_positives = size - nb_valeurs_negatives
-
-    negative_values = [random.uniform(start, 0) for _ in range(nb_valeurs_negatives)]
-    positive_values = [random.uniform(0, end) for _ in range(nb_valeurs_positives)]
-
-    return negative_values + positive_values
-
-
 
 def add_datatokafka():
     """
@@ -154,14 +143,11 @@ def write_data_minio(df: pd.DataFrame):
 
 if __name__ == "__main__":
 
-    # sans kafka
-    columns = ["timestamp", "entrance_amount", "exit_amount", "temperature", "humidity", "parking_entrance", "parking_exit", "parking_actual_vehicle"]
+    # # sans kafka
+    # columns = ["timestamp", "entrance_amount", "exit_amount", "temperature", "humidity", "parking_entrance", "parking_exit", "parking_actual_vehicle"]
+    #
+    # df = generate_dataFrame(columns)
+    # df = add_data(df)
+    # write_data_minio(df)
 
-    df = generate_dataFrame(columns)
-    df = add_data(df)
-    write_data_minio(df)
-
-    #add_datatokafka()
-    #write_data_kafka(df)
-    #write_data_kafka(df)
-    #add_datatokafka()
+    add_datatokafka()
